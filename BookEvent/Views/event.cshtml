@@ -1,0 +1,40 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Core.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Event>
+@{
+	Layout = "master.cshtml";
+}
+
+@if (TempData["Success"] != null)
+{
+	<div class="alert alert-success">
+		@TempData["Success"]
+	</div>
+}
+<div class="container mt-3"style="min-height: 300px;">
+
+
+	<div class="card col-8 m-auto shadow-lg" style="min-height: 250px;">
+		<div class="card-body">
+
+			<h5 class="card-title">Title: <b>@Model?.Value("title")</b></h5>
+			<p class="card-text">Location: <b>@Model?.Value("location")</b></p>
+			<p class="card-text">Date: <b>@Model?.Date.ToString("dd/MM/yyyy")</b></p>
+			<p class="card-text">Capacity: <b>@Model?.Capacity</b></p>
+			<p class="card-text">Detail: <b>@Model?.Detail</b></p>
+
+			@* We don't need the button anymore as the whole card is clickable *@
+		</div>
+		<div class="pb-2 text-center">
+			<a href="@Url.Action("Book", "Event", new { id = Model.Id })" class="btn btn-primary">Book a spot</a>
+			@{
+				string returnUrl = Context.Request.Query["returnUrl"].ToString();
+				string backUrl = string.IsNullOrEmpty(returnUrl) ? Context.Request.Headers["Referer"].ToString() : returnUrl;
+				backUrl = string.IsNullOrEmpty(backUrl) ? "/event" : backUrl;
+			}
+			<a href="@backUrl" class="btn btn-secondary" style="padding: 10px;">Back</a>
+		</div>
+	</div>
+
+
+</div>
